@@ -8,6 +8,9 @@
 <body>
 <?php # Script 1.2 - add_task.php
 
+// Report all PHP errors
+error_reporting(E_ALL);
+
 /* This page adds tasks to the tasks table.
  * The page both displays and handles the form.
  */
@@ -15,17 +18,25 @@
 // Connect to the database:
 $dbc = mysqli_connect('localhost', 'root', 'root', 'test');
 
+/* Greg Maka: added mysqli connect error conditional*/
+
+if (!$dbc) {
+    die('Connect Error: '.mysqli_connect_error());
+  }
+
+
+
 // Check if the form has been submitted:
 if (($_SERVER['REQUEST_METHOD'] == 'POST') && !empty($_POST['task'])) {
 
-    // Sanctify the input...
+  // Sanctify the input...
 
-    // The parent_id must be an integer:
-    if (isset($_POST['parent_id']) &&
+  // The parent_id must be an integer:
+  if (isset($_POST['parent_id']) &&
     filter_var($_POST['parent_id'], FILTER_VALIDATE_INT, array('min_range' => 1)) ) {
-       $parent_id = $_POST['parent_id'];
+      $parent_id = $_POST['parent_id'];
     } else {
-       $parent_id = 0;
+      $parent_id = 0;
     }
 
     // Escape the task:
