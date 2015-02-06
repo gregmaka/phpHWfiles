@@ -16,11 +16,17 @@
 
 // Function for displaying a list.
 // Receives one argument: an array.
-function make_list($parent) {
 
+/* greg maka added static variable and conditional
+   to make_list() instead of using global variable*/
+
+function make_list($parent, $all = NULL) {
+   static $tasks;
+   if (isset($all)) {
+       $tasks = $all;
+   }
     // Need the main $tasks array:
-    global $tasks;
-
+    //global $tasks; //will be using static variable
     echo '<ol>'; // Start an ordered list.
 
     // Loop through each subarray:
@@ -66,7 +72,7 @@ while (list($task_id, $parent_id, $task) = mysqli_fetch_array($r, MYSQLI_NUM)) {
 
 // Send the first array element
 // to the make_list() function:
-make_list($tasks[0]);
+make_list($tasks[0],$tasks);
 
 ?>
 </body>
